@@ -98,6 +98,9 @@
       .alpine {
         border-left-color: #77c1d2;
       } /* Alpine Blue */
+      .preact {
+        border-left-color: #9333ea;
+      } /* Preact Purple */
     </style>
   </head>
   <body>
@@ -226,6 +229,48 @@
             Characters left: <span x-text="max - text.length"></span>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- 5. PREACT (NO-BUILD ES MODULE) -->
+    <section class="preact" id="section-5">
+      <h2>5. Preact (No-Build ES Module)</h2>
+      <p>Lightweight React alternative with JSX via native ES modules. No build step required.</p>
+      <details class="source-details">
+        <summary>Show source</summary>
+        <pre class="source-box"><code class="language-html"></code></pre>
+      </details>
+      <div class="example-card" data-example-wrapper>
+        <div id="preact-root" class="example-root"></div>
+
+        <script type="module">
+          import { h, render } from 'https://esm.sh/preact';
+          import { useState } from 'https://esm.sh/preact/hooks';
+
+          function CounterApp() {
+            const [text, setText] = useState('');
+            const max = 100;
+            const remaining = max - text.length;
+
+            return h(
+              'div',
+              null,
+              h('textarea', {
+                value: text,
+                onInput: (e) => setText(e.target.value),
+                placeholder: 'Type here...'
+              }),
+              h('div', {
+                className: 'counter',
+                style: `color: ${remaining < 0 ? 'red' : 'black'}`
+              },
+                `Characters left: ${remaining}`
+              )
+            );
+          }
+
+          render(h(CounterApp), document.getElementById('preact-root'));
+        </script>
       </div>
     </section>
 
