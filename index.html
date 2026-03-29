@@ -101,6 +101,9 @@
       .preact {
         border-left-color: #9333ea;
       } /* Preact Purple */
+      .lit {
+        border-left-color: #f97316;
+      } /* Lit Orange */
     </style>
   </head>
   <body>
@@ -208,8 +211,8 @@
             );
           }
 
-          const root = ReactDOM.createRoot(document.getElementById("react-root"));
-          root.render(<CounterApp />);
+          const reactRoot = ReactDOM.createRoot(document.getElementById("react-root"));
+          reactRoot.render(<CounterApp />);
         </script>
       </div>
     </section>
@@ -270,6 +273,50 @@
           }
 
           render(h(CounterApp), document.getElementById('preact-root'));
+        </script>
+      </div>
+    </section>
+
+    <!-- 6. LIT-HTML (TEMPLATE LITERALS) -->
+    <section class="lit" id="section-6">
+      <h2>6. lit-html (Template Rendering)</h2>
+      <p>Declarative templates in plain JavaScript. Update state and re-render the template output.</p>
+      <details class="source-details">
+        <summary>Show source</summary>
+        <pre class="source-box"><code class="language-html"></code></pre>
+      </details>
+      <div class="example-card" data-example-wrapper>
+        <div id="lit-root" class="example-root"></div>
+
+        <script type="module">
+          import { html, render } from 'https://esm.sh/lit-html';
+
+          const state = { text: '', max: 100 };
+          const litRoot = document.getElementById('lit-root');
+
+          const onInput = (event) => {
+            state.text = event.target.value;
+            update();
+          };
+
+          const view = () => {
+            const remaining = state.max - state.text.length;
+
+            return html`
+              <div>
+                <textarea .value=${state.text} @input=${onInput} placeholder="Type here..."></textarea>
+                <div class="counter" style=${`color: ${remaining < 0 ? 'red' : 'black'}`}>
+                  Characters left: ${remaining}
+                </div>
+              </div>
+            `;
+          };
+
+          const update = () => {
+            render(view(), litRoot);
+          };
+
+          update();
         </script>
       </div>
     </section>
