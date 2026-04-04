@@ -104,6 +104,9 @@
       .lit {
         border-left-color: #f97316;
       } /* Lit Orange */
+      .wc-lit {
+        border-left-color: #14b8a6;
+      } /* Web Component + lit-html Teal */
     </style>
   </head>
   <body>
@@ -317,6 +320,100 @@
           };
 
           update();
+        </script>
+      </div>
+    </section>
+
+    <!-- 7. VANILLA WEB COMPONENT + LIT-HTML -->
+    <section class="wc-lit" id="section-7">
+      <h2>7. Vanilla Web Component + lit-html</h2>
+      <p>Word-count app as a custom element in plain JavaScript, with lit-html handling reactive template rendering.</p>
+      <details class="source-details">
+        <summary>Show source</summary>
+        <pre class="source-box"><code class="language-html"></code></pre>
+      </details>
+      <div class="example-card" data-example-wrapper>
+        <div class="example-root">
+          <my-word-count max="100"></my-word-count>
+        </div>
+
+        <script type="module">
+          import { html, render } from 'https://esm.sh/lit-html';
+
+          class MyWordCount extends HTMLElement {
+            static get observedAttributes() {
+              return ['max'];
+            }
+
+            constructor() {
+              super();
+              this.attachShadow({ mode: 'open' });
+              this._max = 100;
+              this._text = '';
+
+              this.onInput = this.onInput.bind(this);
+            }
+
+            get max() {
+              return this._max;
+            }
+
+            set max(value) {
+              const parsed = Number(value);
+              this._max = Number.isFinite(parsed) && parsed >= 0 ? parsed : 100;
+            }
+
+            attributeChangedCallback(name, _oldValue, newValue) {
+              if (name === 'max') {
+                this.max = newValue;
+                this.update();
+              }
+            }
+
+            connectedCallback() {
+              this.max = this.getAttribute('max') ?? this._max;
+              this.update();
+            }
+
+            onInput(event) {
+              this._text = event.target.value;
+              this.update();
+            }
+
+            update() {
+              const remaining = this._max - this._text.length;
+
+              render(
+                html`
+                  <style>
+                    :host {
+                      display: inline-block;
+                      width: 100%;
+                    }
+                    textarea {
+                      width: 100%;
+                      height: 80px;
+                      padding: 10px;
+                      border: 1px solid #ccc;
+                      border-radius: 4px;
+                      box-sizing: border-box;
+                      font-family: inherit;
+                    }
+                    .counter {
+                      margin-top: 8px;
+                      font-weight: bold;
+                      color: ${remaining < 0 ? 'red' : 'black'};
+                    }
+                  </style>
+                  <textarea .value=${this._text} @input=${this.onInput} placeholder="Type here..."></textarea>
+                  <div class="counter">Characters left: ${remaining}</div>
+                `,
+                this.shadowRoot
+              );
+            }
+          }
+
+          customElements.define('my-word-count', MyWordCount);
         </script>
       </div>
     </section>
