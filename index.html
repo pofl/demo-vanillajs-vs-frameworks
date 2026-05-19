@@ -38,7 +38,7 @@
         border-radius: 8px;
         margin-bottom: 2rem;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        border-left: 5px solid #ccc;
+        border-left: 5px solid #77c1d2;
       }
       h2 {
         margin-top: 0;
@@ -55,17 +55,8 @@
         box-sizing: border-box;
         font-family: inherit;
       }
-      .source-details {
-        margin-bottom: 1rem;
-      }
-      .source-details > summary {
-        cursor: pointer;
-        color: #1f2937;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-      }
       .source-box {
-        margin: 0.5rem 0 0;
+        margin: 0.75rem 0 1rem;
         border-radius: 6px;
         overflow-x: auto;
       }
@@ -89,24 +80,15 @@
         border-radius: 4px;
         font-size: 0.9rem;
       }
-      .vanilla {
-        border-left-color: #f7df1e;
-      } /* JS Yellow */
-      .react {
-        border-left-color: #61dafb;
-      } /* React Blue */
-      .alpine {
-        border-left-color: #77c1d2;
-      } /* Alpine Blue */
-      .preact {
-        border-left-color: #9333ea;
-      } /* Preact Purple */
-      .lit {
-        border-left-color: #f97316;
-      } /* Lit Orange */
-      .wc-lit {
-        border-left-color: #14b8a6;
-      } /* Web Component + lit-html Teal */
+      section > details > summary {
+        cursor: pointer;
+      }
+      section > details > summary > h2 {
+        display: inline;
+        border-bottom: none;
+        padding-bottom: 0;
+        margin: 0 0 0 0.4em;
+      }
     </style>
   </head>
   <body>
@@ -121,14 +103,12 @@
     </p>
 
     <!-- 1. BASIC VANILLA JAVASCRIPT -->
-    <section class="vanilla" id="section-1">
-      <h2>1. Basic Vanilla (Imperative)</h2>
-      <p>Logic is scattered inside the event listener. Harder to maintain as UI grows.</p>
-      <details class="source-details">
-        <summary>Show source</summary>
+    <section id="section-1">
+      <details open>
+        <summary><h2>1. Basic Vanilla (Imperative)</h2></summary>
+        <p>Logic is scattered inside the event listener. Harder to maintain as UI grows.</p>
         <pre class="source-box"><code class="language-html"></code></pre>
-      </details>
-      <div class="example-card" data-example-wrapper>
+        <div class="example-card" data-example-wrapper>
         <div class="example-root">
           <textarea id="v1-input" placeholder="Type here..."></textarea>
           <div class="counter">Characters left: <span id="v1-count">100</span></div>
@@ -147,53 +127,17 @@
             });
           })();
         </script>
-      </div>
-    </section>
-
-    <!-- 2. VANILLA WITH RENDER FUNCTION -->
-    <section class="vanilla" id="section-2">
-      <h2>2. Vanilla + Render Function</h2>
-      <p>Separates <strong>State</strong> from <strong>View</strong>. The UI is a pure reflection of the data.</p>
-      <details class="source-details">
-        <summary>Show source</summary>
-        <pre class="source-box"><code class="language-html"></code></pre>
-      </details>
-      <div class="example-card" data-example-wrapper>
-        <div class="example-root">
-          <textarea id="v2-input" placeholder="Type here..."></textarea>
-          <div class="counter">Characters left: <span id="v2-count">100</span></div>
         </div>
-
-        <script>
-          (function () {
-            const state = { text: "", max: 100 };
-            const input = document.getElementById("v2-input");
-            const display = document.getElementById("v2-count");
-
-            const render = () => {
-              const remaining = state.max - state.text.length;
-              display.textContent = remaining;
-              display.style.color = remaining < 0 ? "red" : "black";
-            };
-
-            input.addEventListener("input", (e) => {
-              state.text = e.target.value;
-              render();
-            });
-          })();
-        </script>
-      </div>
+      </details>
     </section>
 
-    <!-- 3. REACT (DECLARATIVE COMPONENT) -->
-    <section class="react" id="section-3">
-      <h2>3. React (Component-based)</h2>
-      <p>Uses <code>useState</code>. You only update data; React handles the DOM sync automatically.</p>
-      <details class="source-details">
-        <summary>Show source</summary>
+    <!-- 2. REACT (DECLARATIVE COMPONENT) -->
+    <section id="section-2">
+      <details open>
+        <summary><h2>2. React (Component-based)</h2></summary>
+        <p>Uses <code>useState</code>. You only update data; React handles the DOM sync automatically.</p>
         <pre class="source-box"><code class="language-html"></code></pre>
-      </details>
-      <div class="example-card" data-example-wrapper>
+        <div class="example-card" data-example-wrapper>
         <div id="react-root" class="example-root"></div>
 
         <script type="text/babel">
@@ -217,36 +161,68 @@
           const reactRoot = ReactDOM.createRoot(document.getElementById("react-root"));
           reactRoot.render(<CounterApp />);
         </script>
-      </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- 3. VANILLA WITH RENDER FUNCTION -->
+    <section id="section-3">
+      <details>
+        <summary><h2>3. Vanilla + Render Function</h2></summary>
+        <p>Separates <strong>State</strong> from <strong>View</strong>. The UI is a pure reflection of the data.</p>
+        <pre class="source-box"><code class="language-html"></code></pre>
+        <div class="example-card" data-example-wrapper>
+        <div class="example-root">
+          <textarea id="v2-input" placeholder="Type here..."></textarea>
+          <div class="counter">Characters left: <span id="v2-count">100</span></div>
+        </div>
+
+        <script>
+          (function () {
+            const state = { text: "", max: 100 };
+            const input = document.getElementById("v2-input");
+            const display = document.getElementById("v2-count");
+
+            const render = () => {
+              const remaining = state.max - state.text.length;
+              display.textContent = remaining;
+              display.style.color = remaining < 0 ? "red" : "black";
+            };
+
+            input.addEventListener("input", (e) => {
+              state.text = e.target.value;
+              render();
+            });
+          })();
+        </script>
+        </div>
+      </details>
     </section>
 
     <!-- 4. ALPINE.JS (DECLARATIVE INLINE) -->
-    <section class="alpine" id="section-4">
-      <h2>4. Alpine.js (Reactive Markup)</h2>
-      <p>Framework power directly in HTML. Most concise for simple stateful widgets.</p>
-      <details class="source-details">
-        <summary>Show source</summary>
+    <section id="section-4">
+      <details>
+        <summary><h2>4. Alpine.js (Reactive Markup)</h2></summary>
+        <p>Framework power directly in HTML. Most concise for simple stateful widgets.</p>
         <pre class="source-box"><code class="language-html"></code></pre>
-      </details>
-      <div class="example-card" data-example-wrapper>
+        <div class="example-card" data-example-wrapper>
         <div class="example-root" x-data="{ text: '', max: 100 }">
           <textarea x-model="text" placeholder="Type here..."></textarea>
           <div class="counter" :style="(max - text.length) < 0 ? 'color: red' : 'color: black'">
             Characters left: <span x-text="max - text.length"></span>
           </div>
         </div>
-      </div>
+        </div>
+      </details>
     </section>
 
     <!-- 5. PREACT (NO-BUILD ES MODULE) -->
-    <section class="preact" id="section-5">
-      <h2>5. Preact (No-Build ES Module)</h2>
-      <p>Lightweight React alternative with JSX via native ES modules. No build step required.</p>
-      <details class="source-details">
-        <summary>Show source</summary>
+    <section id="section-5">
+      <details>
+        <summary><h2>5. Preact (No-Build ES Module)</h2></summary>
+        <p>Lightweight React alternative with JSX via native ES modules. No build step required.</p>
         <pre class="source-box"><code class="language-html"></code></pre>
-      </details>
-      <div class="example-card" data-example-wrapper>
+        <div class="example-card" data-example-wrapper>
         <div id="preact-root" class="example-root"></div>
 
         <script type="module">
@@ -277,18 +253,17 @@
 
           render(h(CounterApp), document.getElementById('preact-root'));
         </script>
-      </div>
+        </div>
+      </details>
     </section>
 
     <!-- 6. LIT-HTML (TEMPLATE LITERALS) -->
-    <section class="lit" id="section-6">
-      <h2>6. lit-html (Template Rendering)</h2>
-      <p>Declarative templates in plain JavaScript. Update state and re-render the template output.</p>
-      <details class="source-details">
-        <summary>Show source</summary>
+    <section id="section-6">
+      <details>
+        <summary><h2>6. lit-html (Template Rendering)</h2></summary>
+        <p>Declarative templates in plain JavaScript. Update state and re-render the template output.</p>
         <pre class="source-box"><code class="language-html"></code></pre>
-      </details>
-      <div class="example-card" data-example-wrapper>
+        <div class="example-card" data-example-wrapper>
         <div id="lit-root" class="example-root"></div>
 
         <script type="module">
@@ -321,18 +296,17 @@
 
           update();
         </script>
-      </div>
+        </div>
+      </details>
     </section>
 
     <!-- 7. VANILLA WEB COMPONENT + LIT-HTML -->
-    <section class="wc-lit" id="section-7">
-      <h2>7. Vanilla Web Component + lit-html</h2>
-      <p>Word-count app as a custom element in plain JavaScript, with lit-html handling reactive template rendering.</p>
-      <details class="source-details">
-        <summary>Show source</summary>
+    <section id="section-7">
+      <details>
+        <summary><h2>7. Vanilla Web Component + lit-html</h2></summary>
+        <p>Word-count app as a custom element in plain JavaScript, with lit-html handling reactive template rendering.</p>
         <pre class="source-box"><code class="language-html"></code></pre>
-      </details>
-      <div class="example-card" data-example-wrapper>
+        <div class="example-card" data-example-wrapper>
         <div class="example-root">
           <my-word-count max="100"></my-word-count>
         </div>
@@ -415,7 +389,8 @@
 
           customElements.define('my-word-count', MyWordCount);
         </script>
-      </div>
+        </div>
+      </details>
     </section>
 
     <script>
@@ -425,7 +400,10 @@
 
         if (sourceBoxCode) {
           const wrapper = section.querySelector("[data-example-wrapper]");
-          const content = wrapper ? wrapper.innerHTML : "";
+          if (!wrapper) return;
+          const clone = wrapper.cloneNode(true);
+          clone.querySelectorAll("summary, .source-box").forEach((el) => el.remove());
+          const content = clone.innerHTML;
 
           // Dedent logic
           const lines = content.split("\n");
