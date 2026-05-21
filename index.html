@@ -166,8 +166,6 @@
 
           function CounterApp({ max }) {
             const [text, setText] = useState("");
-            const remaining = max - text.length;
-
             return (
               <div>
                 <textarea value={text} onChange={(e) => setText(e.target.value)} placeholder="Type here..." />
