@@ -19,6 +19,9 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css"
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+    <script>
+      const MAX = 21;
+    </script>
 
     <style>
       body {
@@ -105,13 +108,13 @@
     <!-- LIVE DEMO: Imperative Vanilla JS (no code shown) -->
     <div class="example-card" style="margin-bottom: 2rem;">
       <textarea id="demo-input" placeholder="Type here..."></textarea>
-      <div class="counter">Characters left: <span id="demo-count">100</span></div>
+      <div class="counter">Characters left: <span id="demo-count"></span></div>
     </div>
     <script>
       (function () {
-        const MAX = 100;
         const input = document.getElementById("demo-input");
         const display = document.getElementById("demo-count");
+        display.textContent = MAX;
         input.addEventListener("input", (e) => {
           const remaining = MAX - e.target.value.length;
           display.textContent = remaining;
@@ -129,14 +132,14 @@
         <div class="example-card" data-example-wrapper>
         <div class="example-root">
           <textarea id="v1-input" placeholder="Type here..."></textarea>
-          <div class="counter">Characters left: <span id="v1-count">100</span></div>
+          <div class="counter">Characters left: <span id="v1-count"></span></div>
         </div>
 
         <script>
           (function () {
-            const MAX = 100;
             const input = document.getElementById("v1-input");
             const display = document.getElementById("v1-count");
+            display.textContent = MAX;
 
             input.addEventListener("input", (e) => {
               const remaining = MAX - e.target.value.length;
@@ -183,7 +186,7 @@
           }
 
           const reactRoot = ReactDOM.createRoot(document.getElementById("react-root"));
-          reactRoot.render(<CounterApp max={21} />);
+          reactRoot.render(<CounterApp max={MAX} />);
         </script>
         </div>
       </details>
@@ -198,14 +201,15 @@
         <div class="example-card" data-example-wrapper>
         <div class="example-root">
           <textarea id="v2-input" placeholder="Type here..."></textarea>
-          <div class="counter">Characters left: <span id="v2-count">100</span></div>
+          <div class="counter">Characters left: <span id="v2-count"></span></div>
         </div>
 
         <script>
           (function () {
-            const state = { text: "", max: 100 };
+            const state = { text: "", max: MAX };
             const input = document.getElementById("v2-input");
             const display = document.getElementById("v2-count");
+            display.textContent = MAX;
 
             const render = () => {
               const remaining = state.max - state.text.length;
@@ -230,7 +234,7 @@
         <p>Framework power directly in HTML. Most concise for simple stateful widgets.</p>
         <pre class="source-box"><code class="language-html"></code></pre>
         <div class="example-card" data-example-wrapper>
-        <div class="example-root" x-data="{ text: '', max: 100 }">
+        <div class="example-root" x-data="{ text: '', max: MAX }">
           <textarea x-model="text" placeholder="Type here..."></textarea>
           <div class="counter" :style="(max - text.length) < 0 ? 'color: red' : 'color: black'">
             Characters left: <span x-text="max - text.length"></span>
@@ -255,8 +259,7 @@
 
           function CounterApp() {
             const [text, setText] = useState('');
-            const max = 100;
-            const remaining = max - text.length;
+            const remaining = MAX - text.length;
 
             return h(
               'div',
@@ -293,7 +296,7 @@
         <script type="module">
           import { html, render } from 'https://esm.sh/lit-html';
 
-          const state = { text: '', max: 100 };
+          const state = { text: '', max: MAX };
           const litRoot = document.getElementById('lit-root');
 
           const onInput = (event) => {
@@ -346,7 +349,7 @@
             constructor() {
               super();
               this.attachShadow({ mode: 'open' });
-              this._max = 100;
+              this._max = MAX;
               this._text = '';
 
               this.onInput = this.onInput.bind(this);
@@ -358,7 +361,7 @@
 
             set max(value) {
               const parsed = Number(value);
-              this._max = Number.isFinite(parsed) && parsed >= 0 ? parsed : 100;
+              this._max = Number.isFinite(parsed) && parsed >= 0 ? parsed : MAX;
             }
 
             attributeChangedCallback(name, _oldValue, newValue) {
