@@ -102,9 +102,27 @@
       <strong>UI</strong>.
     </p>
 
+    <!-- LIVE DEMO: Imperative Vanilla JS (no code shown) -->
+    <div class="example-card" style="margin-bottom: 2rem;">
+      <textarea id="demo-input" placeholder="Type here..."></textarea>
+      <div class="counter">Characters left: <span id="demo-count">100</span></div>
+    </div>
+    <script>
+      (function () {
+        const MAX = 100;
+        const input = document.getElementById("demo-input");
+        const display = document.getElementById("demo-count");
+        input.addEventListener("input", (e) => {
+          const remaining = MAX - e.target.value.length;
+          display.textContent = remaining;
+          display.style.color = remaining < 0 ? "red" : "black";
+        });
+      })();
+    </script>
+
     <!-- 1. BASIC VANILLA JAVASCRIPT -->
     <section id="section-1">
-      <details open>
+      <details>
         <summary><h2>1. Basic Vanilla (Imperative)</h2></summary>
         <p>Logic is scattered inside the event listener. Harder to maintain as UI grows.</p>
         <pre class="source-box"><code class="language-html"></code></pre>
@@ -133,7 +151,7 @@
 
     <!-- 2. REACT (DECLARATIVE COMPONENT) -->
     <section id="section-2">
-      <details open>
+      <details>
         <summary><h2>2. React (Component-based)</h2></summary>
         <p>Uses <code>useState</code>. You only update data; React handles the DOM sync automatically.</p>
         <pre class="source-box"><code class="language-html"></code></pre>
