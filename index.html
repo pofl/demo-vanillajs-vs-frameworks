@@ -143,23 +143,29 @@
         <script type="text/babel">
           const { useState } = React;
 
-          function CounterApp() {
+          function CounterApp({ max }) {
             const [text, setText] = useState("");
-            const max = 100;
             const remaining = max - text.length;
 
             return (
               <div>
                 <textarea value={text} onChange={(e) => setText(e.target.value)} placeholder="Type here..." />
-                <div className="counter" style={{ color: remaining < 0 ? "red" : "black" }}>
-                  Characters left: {remaining}
-                </div>
+                <RemainingCharacters textLength={text.length} max={max} />
+              </div>
+            );
+          }
+
+          function RemainingCharacters({ textLength, max }) {
+            const remaining = max - textLength;
+            return (
+              <div className="counter" style={{ color: remaining < 0 ? "red" : "black" }}>
+                Characters left: {remaining}
               </div>
             );
           }
 
           const reactRoot = ReactDOM.createRoot(document.getElementById("react-root"));
-          reactRoot.render(<CounterApp />);
+          reactRoot.render(<CounterApp max={100} />);
         </script>
         </div>
       </details>
